@@ -5,3 +5,35 @@
  * Compiler:  Keil for 8051
  */
 
+#include <reg51.h>
+
+void Transmit(char ch)
+{ 
+   SBUF=ch;
+   while(!TI);
+   TI=0;
+   
+}
+
+void Transmit_string(char *str)
+{
+   while(*str)
+      {
+	 char ch=*str;
+	 Transmit(ch);
+	 str++;
+      }   
+}
+
+
+void main(void)
+ { 
+   TMOD=0x20;
+   TH1=0xFD;
+   TL1=0xFD;
+   SCON=0x50;
+   TR1=1;
+   Transmit_string("Welcome \r\n");
+   while(1);
+  
+ }
